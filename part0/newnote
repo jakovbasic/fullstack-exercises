@@ -1,0 +1,11 @@
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: HTML-code
+borwser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: main.css
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server-->browser: main.js
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: [{"content":"daw","date":"2022-12-25T15:36:04.817Z"}, ... ]
+
+https://www.websequencediagrams.com/cgi-bin/cdraw?lz=CmJyb3dzZXItPnNlcnZlcjogSFRUUCBQT1NUIGh0dHBzOi8vc3R1ZGllcy5jcy5oZWxzaW5raS5maS9leGFtcGxlYXBwL25ld19ub3RlADcXR0UAIC1vdGVzCgCBCQYtLT4AgRoHOiBIVE1MLWNvZGUKYm9yACVBbWFpbi5jcwBVFAASCQCBCkQAYwVqAE4ZagAgRmRhdGEuanNvbgCCJRNbeyJjb250ZW50IjoiZGF3IiwiZGF0ZSI6IjIwMjItMTItMjVUMTU6MzY6MDQuODE3WiJ9LCAuLi4gXQ&s=default

@@ -42,6 +42,22 @@ const Positive = (props) => {
   )
 }
 
+const Statistics = (props) => {
+  return(
+    <div>
+      <Stat stats = {props.good[0]} name = {props.good[1]} />
+      <Stat stats = {props.neutral[0]} name = {props.neutral[1]} />
+      <Stat stats = {props.bad[0]} name = {props.bad[1]} />
+      <Average good = {props.good[0]}
+               neutral = {props.neutral[0]}
+               bad = {props.bad[0]} />
+      <Positive good = {props.good[0]}
+                neutral = {props.neutral[0]}
+                bad = {props.bad[0]} />
+    </div>
+  )
+}
+
 const App = () => {
   const header = "give feedback"
   const header2 = "statistics"
@@ -56,11 +72,7 @@ const App = () => {
       <Button handleClick={() => setNeutral(neutral + 1)} text='neutral' />
       <Button handleClick={() => setBad(bad +1)} text='bad' />
       <Header header={header2} />
-      <Stat stats = {good} name = {"good"} />
-      <Stat stats = {neutral} name = {"neutral"}/>
-      <Stat stats = {bad} name = {"bad"} />
-      <Average good = {good} neutral = {neutral} bad = {bad} />
-      <Positive good = {good} neutral = {neutral} bad = {bad} />
+      <Statistics good = {[good,"good"]} neutral = {[neutral,"neutral"]} bad = {[bad,"bad"]} />
     </div>
   )
 }

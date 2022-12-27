@@ -16,6 +16,32 @@ const Button = (props) => (
   </button>
 )
 
+const Stat = (props) => {
+  return(
+  <div>
+    {props.name} {props.stats}
+  </div>
+  )
+}
+
+const Average = (props) => {
+  const avg = (props.good - props.bad)/(props.good + props.neutral + props.bad)
+  return (
+    <div>
+      average {avg}
+    </div>
+  )
+}
+
+const Positive = (props) => {
+  const pos = (props.good)/(props.good + props.neutral + props.bad)
+  return (
+    <div>
+      positive {pos} %
+    </div>
+  )
+}
+
 const App = () => {
   const header = "give feedback"
   const header2 = "statistics"
@@ -30,9 +56,11 @@ const App = () => {
       <Button handleClick={() => setNeutral(neutral + 1)} text='neutral' />
       <Button handleClick={() => setBad(bad +1)} text='bad' />
       <Header header={header2} />
-      good {good} <br></br>
-      neutral {neutral} <br></br>
-      bad {bad}
+      <Stat stats = {good} name = {"good"} />
+      <Stat stats = {neutral} name = {"neutral"}/>
+      <Stat stats = {bad} name = {"bad"} />
+      <Average good = {good} neutral = {neutral} bad = {bad} />
+      <Positive good = {good} neutral = {neutral} bad = {bad} />
     </div>
   )
 }

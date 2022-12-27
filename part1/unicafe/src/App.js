@@ -58,6 +58,19 @@ const Statistics = (props) => {
   )
 }
 
+const History = (props) => {
+if(props.good + props.neutral + props.bad === 0) {
+  return( <div>No feedback given</div>)
+}
+else return (
+  <div>
+    <Statistics good = {[props.good,"good"]} 
+                neutral = {[props.neutral,"neutral"]} 
+                bad = {[props.bad,"bad"]} />
+  </div>
+  )
+}
+
 const App = () => {
   const header = "give feedback"
   const header2 = "statistics"
@@ -72,7 +85,7 @@ const App = () => {
       <Button handleClick={() => setNeutral(neutral + 1)} text='neutral' />
       <Button handleClick={() => setBad(bad +1)} text='bad' />
       <Header header={header2} />
-      <Statistics good = {[good,"good"]} neutral = {[neutral,"neutral"]} bad = {[bad,"bad"]} />
+      <History good = {good} neutral = {neutral} bad = {bad} />
     </div>
   )
 }

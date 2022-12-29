@@ -12,7 +12,25 @@ const Persons = (props) => {
       )}
     </div>
   )
-} 
+}
+
+const Filter = (props) => {
+  return(
+      <form>
+        <div>filter shown with <input value = {props.filter} onChange={props.handler}/></div>
+      </form>
+  )
+}
+
+const Submit = (props) => {
+  return(
+    <form onSubmit={props.submit}>
+        <div>name: <input value = {props.name} onChange={props.nameHanlder}/></div>
+        <div>number: <input value = {props.number} onChange={props.numberHandler}/></div>
+        <div><button type="submit">add</button></div>
+    </form>
+  )
+}
 
 const App = () => {
   const head1 = "Phonebook"
@@ -67,15 +85,10 @@ const App = () => {
   return (
     <div>
       <Header header ={head1}/>
-      <form>
-        <div>filter shown with <input value = {newFilter} onChange={handleFilterChange}/></div>
-      </form>
+      <Filter filter = {newFilter} handler = {handleFilterChange}/>
       <Header header ={head2}/>
-      <form onSubmit={addName}>
-        <div>name: <input value = {newName} onChange={handleNameChange}/></div>
-        <div>number: <input value = {newNumber} onChange={handleNumberChange}/></div>
-        <div><button type="submit">add</button></div>
-      </form>
+      <Submit submit = {addName} name = {newName} nameHanlder = {handleNameChange}
+              number = {newNumber} numberHandler = {handleNumberChange} />
       <Header header ={head3}/>
       <Persons show = {filteredPersons} />
     </div>

@@ -9,7 +9,9 @@ const Persons = (props) => {
   return(
     <div>
       {props.show.map(person =>
-        <div key = {person.name}> {person.name} {person.number}</div>
+        <div key = {person.name}> {person.name} {person.number}
+          <button onClick={()=>props.removePerson(person.id)}>delete</button>
+        </div>
       )}
     </div>
   )
@@ -49,10 +51,10 @@ const App = () => {
     console.log('effect')
     personService
       .getAll()
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
-      })
+        .then(response => {
+          console.log('promise fulfilled')
+          setPersons(response.data)
+        })
   }, [])
   console.log('render', persons.length, 'notes')
 
@@ -75,6 +77,17 @@ const App = () => {
         .then(response => {
           console.log(response)
         })
+    }
+  }
+
+  const deleteById = (id) => {
+    const name = persons.find(p=> p.id===id).name
+    if(window.confirm(`Delete ${name}`)) {
+      personService
+        .deletePerson(id)
+          .then(person => {
+            setPersons(persons.filter(p => p.id !== person.id))
+          })
     }
   }
 
@@ -102,7 +115,7 @@ const App = () => {
       <Submit submit = {addName} name = {newName} nameHanlder = {handleNameChange}
               number = {newNumber} numberHandler = {handleNumberChange} />
       <Header header ={head3}/>
-      <Persons show = {filteredPersons} />
+      <Persons show = {filteredPersons} removePerson = {deleteById} />
     </div>
   )
 

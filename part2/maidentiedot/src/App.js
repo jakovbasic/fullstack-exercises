@@ -9,6 +9,24 @@ const Filter = (props) => {
   )
 }
 
+const Country = ({country}) => {
+  const languages = Object.values(country.languages)
+  return(
+    <div>
+      <h1>{country.name.common}</h1>
+      <div>capital {country.capital[0]}</div>
+      <div>area {country.area}</div>
+      <h3>languages:</h3>
+      <ul>
+        {languages.map(lang =>
+          <li key = {lang}>{lang}</li>  
+        )}
+      </ul>
+      <img src={country.flags.png} alt={country.flag}/>
+    </div>
+  )
+}
+
 const Countries = ({countries}) => {
   console.log(countries)
   if(countries.length > 10) {
@@ -16,27 +34,14 @@ const Countries = ({countries}) => {
       <div>Too many matches, specify another filter</div>
     )
   } else if(countries.length === 1) {
-    const country = countries[0]
-    const languages = Object.values(country.languages)
     return(
-      <div>
-        <h1>{country.name.common}</h1>
-        <div>capital {country.capital[0]}</div>
-        <div>area {country.area}</div>
-        <h3>languages:</h3>
-        <ul>
-          {languages.map(lang =>
-            <li key = {lang}>{lang}</li>  
-          )}
-        </ul>
-        <img src={country.flags.png}/>
-      </div>
+      <Country country = {countries[0]} />
     )
   } else {
      return(
         <div>
         {countries.map(country =>
-          <div key = {country.name.common}> {country.name.common}</div>
+          <div key = {country.name.common}>{country.name.common}</div>
         )}
       </div>
     )
@@ -68,7 +73,7 @@ const App = () => {
   return(
     <div>
       <Filter filter = {newFilter} handler = {handleFilterChange}/>
-      <Countries countries = {filteredCountries} />
+      <Countries countries = {filteredCountries}/>
     </div>
   )
 }

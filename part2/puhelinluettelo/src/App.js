@@ -30,7 +30,7 @@ const Submit = (props) => {
     <form onSubmit={props.submit}>
         <div>name: <input value = {props.name} onChange={props.nameHanlder}/></div>
         <div>number: <input value = {props.number} onChange={props.numberHandler}/></div>
-        <div><button type="submit">add</button></div>
+        <div><button type="submit" >add</button></div>
     </form>
   )
 }
@@ -63,7 +63,18 @@ const App = () => {
     console.log('button clicked', event.target)
 
     if(names.includes(newName)) {
-      window.alert(`${newName} is already added to phonebook`)
+      if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const person = persons.find(p=> p.name===newName)
+        const newObject = {
+          name: person.name,
+          number: newNumber
+        }
+        personService
+          .update(person.id, newObject)
+            .then(p1 => {
+              setPersons(persons.filter(p2 => p2.id !== p1.id ? p2 : newObject))
+            })
+      }
     } else {
       const nameObject = {
         name: newName,

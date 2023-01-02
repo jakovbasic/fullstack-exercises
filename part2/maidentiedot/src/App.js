@@ -9,6 +9,33 @@ const Filter = (props) => {
   )
 }
 
+const Weather = ({country}) => {
+  const api_key = process.env.REACT_APP_API_KEY
+  const lat = country.latlng[0]
+  const lon = country.latlng[1]
+  const [temp, setTemp] = useState(0) 
+  const [wind, setWind] = useState(0)
+  const [iconId, setIconId] = useState('01d')
+
+  const promise = axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}`)
+  promise.then(response => {
+    const weather = response.data
+    console.log(weather)
+    setTemp((weather.main.temp-273.15).toFixed(2))
+    setWind(weather.wind.speed)
+    setIconId(weather.weather[0].icon)
+    }) 
+    
+  const icon = `http://openweathermap.org/img/wn/${iconId}@2x.png`
+  return(
+    <div>
+      <div>temperature {temp} Celsius</div>
+      <img src={icon} alt={icon}/>
+      <div>wind {wind} m/s</div>
+    </div>
+  )  
+}
+
 const Country = ({country}) => {
   const languages = Object.values(country.languages)
   return(
@@ -23,6 +50,8 @@ const Country = ({country}) => {
         )}
       </ul>
       <img src={country.flags.png} alt={country.flag}/>
+      <h2>Weather in {country.name.common}</h2>
+      <Weather country = {country}/>
     </div>
   )
 }

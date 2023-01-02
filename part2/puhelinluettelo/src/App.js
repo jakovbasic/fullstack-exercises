@@ -3,7 +3,18 @@ import personService from './services/persons'
 
 const Header = ({header}) => {
   return(<div><h1>{header}</h1></div>
-  )}
+)}
+
+const Notification = ({ message }) => {
+  if (message === '') {
+    return null
+  }
+  return (
+    <div className="message">
+      {message}
+    </div>
+  )
+}  
 
 const Persons = (props) => {
   return(
@@ -44,6 +55,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [message, setMessage] = useState('')
 
   const names = persons.map(person => person.name)
 
@@ -65,14 +77,12 @@ const App = () => {
     if(names.includes(newName)) {
       if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         const person = persons.find(p=> p.name===newName)
-        const newObject = {
-          name: person.name,
-          number: newNumber
-        }
+        const newObject = {...person, number: newNumber}
         personService
           .update(person.id, newObject)
-            .then(p1 => {
-              setPersons(persons.filter(p2 => p2.id !== p1.id ? p2 : newObject))
+            .then(response => {
+              setPersons(persons.filter(p2 => p2.id !== person.id ? p2 : response.data))
+              setMessage(`Updated ${person.name}`)
             })
       }
     } else {
@@ -88,7 +98,10 @@ const App = () => {
         .then(response => {
           console.log(response)
         })
+      setMessage(`Added ${newName}`)
     }
+    setNewName('')
+    setNewNumber('')
   }
 
   const deleteById = (id) => {
@@ -99,6 +112,7 @@ const App = () => {
           .then(person => {
             setPersons(persons.filter(p => p.id !== person.id))
           })
+      setMessage(`Deleted ${name}`)
     }
   }
 
@@ -123,6 +137,7 @@ const App = () => {
       <Header header ={head1}/>
       <Filter filter = {newFilter} handler = {handleFilterChange}/>
       <Header header ={head2}/>
+      <Notification message={message}/>
       <Submit submit = {addName} name = {newName} nameHanlder = {handleNameChange}
               number = {newNumber} numberHandler = {handleNumberChange} />
       <Header header ={head3}/>

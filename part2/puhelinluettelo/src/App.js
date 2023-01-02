@@ -8,6 +8,12 @@ const Header = ({header}) => {
 const Notification = ({ message }) => {
   if (message === '') {
     return null
+  } else if (message.includes('Information of')) {
+    return(
+      <div className="error">
+        {message}
+      </div>
+    )
   }
   return (
     <div className="message">
@@ -83,6 +89,9 @@ const App = () => {
             .then(response => {
               setPersons(persons.filter(p2 => p2.id !== person.id ? p2 : response.data))
               setMessage(`Updated ${person.name}`)
+            }).catch(error => {
+              setMessage( `Information of ${person.name} has already been removed from server`)
+              setPersons(persons.filter(p => p.id !== person.id))
             })
       }
     } else {

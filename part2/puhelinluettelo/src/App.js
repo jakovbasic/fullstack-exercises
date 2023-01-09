@@ -87,7 +87,7 @@ const App = () => {
         personService
           .update(person.id, newObject)
             .then(response => {
-              setPersons(persons.filter(p2 => p2.id !== person.id ? p2 : response.data))
+              setPersons(persons.map(p2 => p2.id !== person.id ? p2 : response.data))
               setMessage(`Updated ${person.name}`)
             }).catch(error => {
               setMessage( `Information of ${person.name} has already been removed from server`)

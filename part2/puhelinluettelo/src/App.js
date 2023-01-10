@@ -8,7 +8,7 @@ const Header = ({header}) => {
 const Notification = ({ message }) => {
   if (message === '') {
     return null
-  } else if (message.includes('Information of')) {
+  } else if (message.includes('Information of') || message.includes('allowed length')) {
     return(
       <div className="error">
         {message}
@@ -86,8 +86,8 @@ const App = () => {
         const newObject = {...person, number: newNumber}
         personService
           .update(person.id, newObject)
-            .then(response => {
-              setPersons(persons.map(p2 => p2.id !== person.id ? p2 : response.data))
+            .then(savedPerson => {
+              setPersons(persons.map(p => p.id !== person.id ? p : savedPerson))
               setMessage(`Updated ${person.name}`)
             }).catch(error => {
               setMessage( `Information of ${person.name} has already been removed from server`)
@@ -99,15 +99,16 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-      setPersons(persons.concat(nameObject))
-      setNewName('')
-      setNewNumber('')
       personService
         .create(nameObject)
         .then(response => {
           console.log(response)
+          setPersons(persons.concat(nameObject))
+          setMessage(`Added ${newName}`)
+        }).catch(error => {
+          console.log(error.response.data)
+          setMessage(`Person validation failed: name: Path 'name' ('${newName}') is shorter than the minimum allowed length (3)`)
         })
-      setMessage(`Added ${newName}`)
     }
     setNewName('')
     setNewNumber('')

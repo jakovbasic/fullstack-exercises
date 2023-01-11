@@ -1,7 +1,7 @@
 const listHelper = require('../utils/list_helper')
 
 describe('total likes', () => {
-    const listWithOneBlog = [
+    const blogs = [
         {
             _id: "5a422a851b54a676234d17f7",
             title: "React patterns",
@@ -29,7 +29,7 @@ describe('total likes', () => {
     ]
   
     test('when list has only one blog equals the likes of that', () => {
-      const result = listHelper.totalLikes(listWithOneBlog)
+      const result = listHelper.totalLikes(blogs)
       expect(result).toBe(24)
     })
   })

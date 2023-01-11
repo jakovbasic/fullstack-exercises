@@ -5,8 +5,7 @@ const dummy = (blogs) => {
   }
 
 const totalLikes = (blogs) => {
-  const sum = blogs.map(blog => blog.likes)
-                          .reduce((partialSum, a) => partialSum + a, 0)
+  const sum = blogs.reduce((partialSum, blog) => partialSum + blog.likes, 0)
   return sum
 }
 
@@ -29,10 +28,25 @@ const mostBlogs = (blogs) => {
 
   return author
 }
+
+const mostLikes = (blogs) => {
+  const byAuthor = _.groupBy(blogs, (blog) => blog.author)
+  const likeCounts = Object.keys(byAuthor).map(key => {
+    return {
+        author: key,
+        likes: byAuthor[key].reduce((partialSum, blog) => partialSum + blog.likes, 0)
+    } 
+  })
+  const most = Math.max(...likeCounts.map(auth => auth.likes))
+  const author = likeCounts.find(auth => auth.likes === most)
+
+  return author
+}
   
   module.exports = {
     dummy,
     totalLikes,
     favouriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
   }

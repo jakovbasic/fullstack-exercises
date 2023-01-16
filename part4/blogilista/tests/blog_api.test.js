@@ -65,7 +65,17 @@ test('blog without likes can be added', async () => {
     expect(BlogsAtEnd[BlogsAtEnd.length-1].likes).toEqual(0)
   })
 
-
+test('invalid blog cannot be added', async () => {
+    const newBlog1 = { author: 'me', url: 'none'}
+    
+    await api.post('/api/blogs').send(newBlog1)
+      .expect(400)
+    
+    const newBlog2 = { title: 'test3', author: 'me'}
+    
+    await api.post('/api/blogs').send(newBlog2)
+      .expect(400)
+})
 
 afterAll(() => {
   mongoose.connection.close()

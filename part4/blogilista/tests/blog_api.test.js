@@ -26,7 +26,27 @@ test('all blogs are returned', async () => {
 test('blogs have an id', async () => {
     const response = await api.get('/api/blogs')
     response.body.forEach(r => expect(r.id).toBeDefined())
-  })
+})
+
+test('a valid blog can be added ', async () => {
+  const newBlog = {
+    title: 'test',
+    author: 'me',
+    url: 'none',
+    likes: 0
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect('Content-Type', /application\/json/)
+
+  const BlogsAtEnd = await helper.blogsInDb()
+  expect(BlogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+  const titles = BlogsAtEnd.map(n => n.title)
+  expect(titles).toContain('test')
+})  
 
 afterAll(() => {
   mongoose.connection.close()

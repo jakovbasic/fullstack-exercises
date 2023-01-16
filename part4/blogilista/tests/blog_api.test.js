@@ -94,6 +94,21 @@ test('delete blog', async () => {
   expect(blogsAtEnd).not.toContain(blogToDelete)
 })
 
+test('update blog', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToUpdate = blogsAtStart[0]
+  const updatedBlog = {...blogToUpdate, likes: 100 }
+
+  await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(updatedBlog)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  const blogAtEnd = blogsAtEnd.find(b => b.id === blogToUpdate.id)
+  expect(blogAtEnd.likes).toBe(100)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })

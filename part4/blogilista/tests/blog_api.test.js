@@ -77,6 +77,23 @@ test('invalid blog cannot be added', async () => {
       .expect(400)
 })
 
+test('delete blog', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToDelete = blogsAtStart[0]
+
+  await api
+    .delete(`/api/blogs/${blogToDelete.id}`)
+    .expect(204)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  expect(blogsAtEnd).toHaveLength(
+    helper.initialBlogs.length - 1
+  )
+
+  expect(blogsAtEnd).not.toContain(blogToDelete)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })

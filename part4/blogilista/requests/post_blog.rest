@@ -1,9 +1,9 @@
 POST  http://localhost:3003/api/blogs 
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imhlc3N1MiIsImlkIjoiNjNjNjk3ZWYyYzBkOGQxMDY3ZTM0Y2U0IiwiaWF0IjoxNjczOTY0NTc5fQ.T5WPWx3J0mUMEQPtaKD3TCPmpwdOVDpRCVUXnhy3198
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imhlc3N1MiIsImlkIjoiNjNjNmQxNjQzNDNlNWZjNTQ4Zjc0YzhlIiwiaWF0IjoxNjczOTc0MTI0fQ.sy_E0nk0mjgME1KLMvoOFZ05OAOV250nCBLJp45qch0
 
 {
-    "userId" : "63c697ef2c0d8d1067e34ce4",
+    "user" : "63c6d164343e5fc548f74c8e",
     "title": "poputest3",
     "author": "jakovB",
     "url": "www.fi",

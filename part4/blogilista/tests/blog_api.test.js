@@ -30,13 +30,26 @@ test('blogs have an id', async () => {
     response.body.forEach(r => expect(r.id).toBeDefined())
 })
 
-/*
+describe('when there is initially one user at db', () => {
+  beforeEach(async () => {
+      await User.deleteMany({})
+
+      const passwordHash = await bcrypt.hash('sekret', 10)
+      const user = new User({ username: 'root', passwordHash })
+
+      await user.save()
+
+      await api.post('/api/login').send({username: user.name, password: 'sekret'})
+  })
+
 test('a valid blog can be added ', async () => {
+  const users = await helper.usersInDb()
   const newBlog = {
     title: 'test',
     author: 'me',
     url: 'none',
-    likes: 0
+    likes: 0,
+    user: users[0].id
   }
 
   await api
@@ -79,7 +92,7 @@ test('invalid blog cannot be added', async () => {
     await api.post('/api/blogs').send(newBlog2)
       .expect(400)
 })
-*/
+
 
 test('delete blog', async () => {
   const blogsAtStart = await helper.blogsInDb()
@@ -112,16 +125,6 @@ test('update blog', async () => {
   const blogAtEnd = blogsAtEnd.find(b => b.id === blogToUpdate.id)
   expect(blogAtEnd.likes).toBe(100)
 })
-
-describe('when there is initially one user at db', () => {
-  beforeEach(async () => {
-      await User.deleteMany({})
-
-      const passwordHash = await bcrypt.hash('sekret', 10)
-      const user = new User({ username: 'root', passwordHash })
-
-      await user.save()
-  })
 
   test('unique user can be created', async () => {
       const usersAtStart = await helper.usersInDb()

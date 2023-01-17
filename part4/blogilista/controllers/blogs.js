@@ -1,7 +1,6 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
-const jwt = require('jsonwebtoken')
 
 blogsRouter.get('/', async (_request, response) => { 
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
@@ -10,8 +9,7 @@ blogsRouter.get('/', async (_request, response) => {
 
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  const user = await User.findById(decodedToken.id)
+  const user = await User.findById(request.user._id)
 
   const blog = new Blog({
     title: body.title,
@@ -33,7 +31,7 @@ blogsRouter.delete('/:id', async (request, response) => {
     if (!blogToDelete ) {
         return response.status(204).end()
     }
-    if (blogToDelete.user.toString() !== request.userId ) {
+    if (blogToDelete.user.toString() !== request.user.id ) {
         return response.status(401).json({ error: 'blog can only be deleted by the creator'})
     }
 

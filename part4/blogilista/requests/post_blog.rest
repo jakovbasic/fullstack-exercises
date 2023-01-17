@@ -1,0 +1,10 @@
+POST  http://localhost:3003/api/blogs 
+Content-Type: application/json
+
+{
+    "userId" : "63c5c93959c71f92930a7468",
+    "title": "poputest",
+    "author": "jakovB",
+    "url": "www.fi",
+    "likes": "2"
+}

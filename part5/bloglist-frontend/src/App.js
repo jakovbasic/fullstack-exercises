@@ -5,7 +5,7 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [showAll, setShowAll] = useState(true)
+  //const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
@@ -17,13 +17,24 @@ const App = () => {
     )  
   }, [])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
+
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username, password,
+        username, password
       })
-  
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(user)
+      ) 
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -59,6 +70,11 @@ const App = () => {
       <button type="submit">login</button>
     </form>      
   )
+
+  const logout = () => {
+    window.localStorage.clear()
+    window.location.reload()
+  }
   /*
   const blogForm = () => (
     <form onSubmit={addBlog}>
@@ -70,11 +86,11 @@ const App = () => {
     </form>  
   )
     */
-  if (user === null) {
+  if (!user) {
     return (
       <div>
         <h2>Log in to application</h2>
-        {user === null && loginForm()}
+        {loginForm()}
       </div>
     )
   }
@@ -82,6 +98,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <p>{user.name} logged in<button onClick={logout}>log out</button></p>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}

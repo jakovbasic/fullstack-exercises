@@ -5,5 +5,5 @@ const login = async credentials => {
   const response = await axios.post(baseUrl, credentials)
   return response.data
 }
-//a
+
 export default { login }

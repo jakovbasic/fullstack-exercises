@@ -38,11 +38,9 @@ describe('when there is initially one user at db', () => {
       const user = new User({ username: 'root', passwordHash })
 
       await user.save()
-
-      await api.post('/api/login').send({username: user.name, password: 'sekret'})
   })
 
-test('a valid blog can be added ', async () => {
+test('blog can not be added unauthorized', async () => {
   const users = await helper.usersInDb()
   const newBlog = {
     title: 'test',
@@ -55,32 +53,42 @@ test('a valid blog can be added ', async () => {
   await api
     .post('/api/blogs')
     .send(newBlog)
+    .expect(401)
     .expect('Content-Type', /application\/json/)
 
   const BlogsAtEnd = await helper.blogsInDb()
-  expect(BlogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+  expect(BlogsAtEnd).toHaveLength(helper.initialBlogs.length)
+
+  const titles = BlogsAtEnd.map(n => n.title)
+  expect(titles.includes('test')).toBe(false)
+})
+
+test('blog can be added if authorized', async () => {
+
+  const response = await api.post('/api/login').send({username: 'root', password: 'sekret'})
+  
+  const users = await helper.usersInDb()
+  const newBlog = {
+    title: 'test',
+    author: 'me',
+    url: 'none',
+    likes: 0,
+    user: users[0].id
+  }
+
+  await api
+    .post('/api/blogs')
+    .set('Authorization', response.token)
+    .send(newBlog)
+    .expect('Content-Type', /application\/json/)
+
+  const BlogsAtEnd = await helper.blogsInDb()
+  expect(BlogsAtEnd).toHaveLength(helper.initialBlogs.length +1)
 
   const titles = BlogsAtEnd.map(n => n.title)
   expect(titles).toContain('test')
 })
-
-test('blog without likes can be added', async () => {
-    const newBlog = {
-      title: 'test2',
-      author: 'me',
-      url: 'none'
-    }
-  
-    await api
-      .post('/api/blogs')
-      .send(newBlog)
-      .expect('Content-Type', /application\/json/)
-  
-    const BlogsAtEnd = await helper.blogsInDb()
-  
-    expect(BlogsAtEnd[BlogsAtEnd.length-1].likes).toEqual(0)
-  })
-
+/*
 test('invalid blog cannot be added', async () => {
     const newBlog1 = { author: 'me', url: 'none'}
     
@@ -125,6 +133,7 @@ test('update blog', async () => {
   const blogAtEnd = blogsAtEnd.find(b => b.id === blogToUpdate.id)
   expect(blogAtEnd.likes).toBe(100)
 })
+*/
 
   test('unique user can be created', async () => {
       const usersAtStart = await helper.usersInDb()

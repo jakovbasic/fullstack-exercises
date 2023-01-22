@@ -1,4 +1,4 @@
-import Togglable from "./togglable"
+import Togglable from './togglable'
 
 const Blog = ({ blog, addLike, removeBlog, loggedUser }) => {
   const blogStyle = {
@@ -10,7 +10,7 @@ const Blog = ({ blog, addLike, removeBlog, loggedUser }) => {
   }
 
   const like = () => {
-    const newBlog = {...blog, likes: blog.likes+1, user: blog.user.id}
+    const newBlog = { ...blog, likes: blog.likes+1, user: blog.user.id }
     addLike(newBlog)
   }
 
@@ -26,11 +26,11 @@ const Blog = ({ blog, addLike, removeBlog, loggedUser }) => {
     <div style={blogStyle}>
       <div> {blog.title} {blog.author} </div>
       <Togglable buttonLabel='show' buttonLabel2 = 'hide'>
-      <div> {blog.url} </div>
-      <div> likes: {blog.likes} <button onClick={like}>like</button></div>
-      {loggedUser.username === blog.user.username && removeButton()}
+        <div> {blog.url} </div>
+        <div> likes: {blog.likes} <button onClick={like}>like</button></div>
+        {loggedUser.username === blog.user.username && removeButton()}
       </Togglable>
-  </div>
-)}
+    </div>
+  )}
 
 export default Blog

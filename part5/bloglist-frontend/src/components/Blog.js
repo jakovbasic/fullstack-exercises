@@ -1,6 +1,6 @@
 import Togglable from "./togglable"
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, addLike, removeBlog, loggedUser }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -9,7 +9,18 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
 
-  const like = () => {}
+  const like = () => {
+    const newBlog = {...blog, likes: blog.likes+1, user: blog.user.id}
+    addLike(newBlog)
+  }
+
+  const remove = () => {
+    removeBlog(blog)
+  }
+
+  const removeButton = () => {
+    return(<div><button onClick={remove}>remove</button></div>)
+  }
 
   return (
     <div style={blogStyle}>
@@ -17,6 +28,7 @@ const Blog = ({ blog }) => {
       <Togglable buttonLabel='show' buttonLabel2 = 'hide'>
       <div> {blog.url} </div>
       <div> likes: {blog.likes} <button onClick={like}>like</button></div>
+      {loggedUser.username === blog.user.username && removeButton()}
       </Togglable>
   </div>
 )}

@@ -83,7 +83,7 @@ const App = () => {
       <Notification message={message}/>
       <p>{user.name} logged in<button onClick={logout}>log out</button></p>
       <h2>create new</h2>
-      <Togglable buttonLabel='login'>
+      <Togglable buttonLabel='add blog' buttonLabel2 = 'cancel'>
         <BlogForm create={addBlog}/>
       </Togglable>
       {blogs.map(blog =>

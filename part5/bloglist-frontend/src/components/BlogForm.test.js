@@ -10,8 +10,12 @@ test('<BlogForm /> updates parent state and calls onSubmit', async () => {
 
   render(<BlogForm create={createBlog} />)
 
+  const inputs = screen.getAllByRole('textbox')
+  await user.type(inputs[0], 'test')
+
   const sendButton = screen.getByText('create')
   await user.click(sendButton)
 
   expect(createBlog.mock.calls).toHaveLength(1)
+  expect(createBlog.mock.calls[0][0].title).toBe('test' )
 })

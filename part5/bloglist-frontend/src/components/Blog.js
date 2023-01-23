@@ -1,6 +1,8 @@
-import Togglable from './togglable'
+import { useState } from 'react'
 
 const Blog = ({ blog, addLike, removeBlog, loggedUser }) => {
+  const [view, setView] = useState(false)
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -22,15 +24,24 @@ const Blog = ({ blog, addLike, removeBlog, loggedUser }) => {
     return(<div><button onClick={remove}>remove</button></div>)
   }
 
+
+  const toggleView = () => {
+    setView(!view)
+  }
+
   return (
     <div style={blogStyle}>
-      <div> {blog.title} {blog.author} </div>
-      <Togglable buttonLabel='show' buttonLabel2 = 'hide'>
-        <div> {blog.url} </div>
-        <div> likes: {blog.likes} <button onClick={like}>like</button></div>
-        {loggedUser.username === blog.user.username && removeButton()}
-      </Togglable>
+      {!view ? <div>{blog.title} {blog.author} <button onClick={toggleView}>view</button></div>
+        : <div>
+          <p>title: {blog.title} <button onClick={toggleView}>hide</button></p>
+          <p>author: {blog.author}</p>
+          <p>url: {blog.url}</p>
+          <p>likes: {blog.likes} <button onClick={like}>like</button></p>
+          {loggedUser.username === blog.user.username && removeButton()}
+        </div>
+      }
     </div>
-  )}
+  )
+}
 
 export default Blog

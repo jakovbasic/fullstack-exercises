@@ -19,7 +19,7 @@ test('renders content', () => {
   expect(element).toBeDefined()
 })
 
-test('clicking the button calls event handler once', async () => {
+test('clicking the button displays blog info', async () => {
   const blog = {
     title: 'test',
     author: 'mf',
@@ -46,3 +46,27 @@ test('clicking the button calls event handler once', async () => {
   expect(e3).toBeDefined()
   expect(e4).toBeDefined()
 })
+
+test('clicking the button twice calls event handler twice', async () => {
+    const blog = {
+        title: 'test',
+        author: 'mf',
+        url: 'www.fi',
+        likes: '7',
+        user: {
+          username: 'some'
+        }
+    }
+    const testUser = 'tester'
+
+    const mockHandler = jest.fn()
+    
+    render(<Blog blog={blog} loggedUser={testUser} addLike={mockHandler} />)
+  
+    const user = userEvent.setup()
+    await user.click(screen.getByText('view'))
+    await user.click(screen.getByText('like'))
+    await user.click(screen.getByText('like'))
+  
+    expect(mockHandler.mock.calls).toHaveLength(2)
+  })

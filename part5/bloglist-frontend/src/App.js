@@ -87,28 +87,23 @@ const App = () => {
     }
   }
 
-  if (!user) {
-    return (
-      <div>
-        <h2>Log in to application</h2>
-        <Notification message={message}/>
-        {loginForm({ handleLogin, username, setUsername, password, setPassword })}
-      </div>
-    )
-  }
-
   return (
     <div>
       <h2>blogs</h2>
       <Notification message={message}/>
-      <p>{user.name} logged in<button onClick={logout}>log out</button></p>
-      <h2>create new</h2>
-      <Togglable buttonLabel='add blog' buttonLabel2 = 'cancel'>
-        <BlogForm create={addBlog}/>
-      </Togglable>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} addLike={likeBlog} removeBlog={deleteBlog} loggedUser={user} />
-      )}
+      {!user ? loginForm({ handleLogin, username, setUsername, password, setPassword }) :
+        <div>
+          <Notification message={message}/>
+          <p>{user.name} logged in<button onClick={logout}>log out</button></p>
+          <h2>create new</h2>
+          <Togglable buttonLabel='add blog' buttonLabel2 = 'cancel'>
+            <BlogForm create={addBlog}/>
+          </Togglable>
+          {blogs.map(blog =>
+            <Blog key={blog.id} blog={blog} addLike={likeBlog} removeBlog={deleteBlog} loggedUser={user} />
+          )}
+        </div>
+      }
     </div>
   )
 }

@@ -48,25 +48,25 @@ test('clicking the button displays blog info', async () => {
 })
 
 test('clicking the button twice calls event handler twice', async () => {
-    const blog = {
-        title: 'test',
-        author: 'mf',
-        url: 'www.fi',
-        likes: '7',
-        user: {
-          username: 'some'
-        }
+  const blog = {
+    title: 'test',
+    author: 'mf',
+    url: 'www.fi',
+    likes: '7',
+    user: {
+      username: 'some'
     }
-    const testUser = 'tester'
+  }
+  const testUser = 'tester'
 
-    const mockHandler = jest.fn()
-    
-    render(<Blog blog={blog} loggedUser={testUser} addLike={mockHandler} />)
-  
-    const user = userEvent.setup()
-    await user.click(screen.getByText('view'))
-    await user.click(screen.getByText('like'))
-    await user.click(screen.getByText('like'))
-  
-    expect(mockHandler.mock.calls).toHaveLength(2)
-  })
+  const mockHandler = jest.fn()
+
+  render(<Blog blog={blog} loggedUser={testUser} addLike={mockHandler} />)
+
+  const user = userEvent.setup()
+  await user.click(screen.getByText('view'))
+  await user.click(screen.getByText('like'))
+  await user.click(screen.getByText('like'))
+
+  expect(mockHandler.mock.calls).toHaveLength(2)
+})

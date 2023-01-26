@@ -41,7 +41,7 @@ describe('Blog app', function() {
       cy.get('#password').type('salainen')
       cy.contains('login').click()
     })
-
+    
     it('A blog can be created', function() {
       cy.contains('add blog').click()
       cy.get('#title').type('a blog created by cypress')
@@ -49,6 +49,16 @@ describe('Blog app', function() {
       cy.get('#url').type('hessu.fi')
       cy.contains('save').click()
       cy.contains('a blog created by cypress makkone')
+    })
+    
+    it('A blog can be created', function() {
+      cy.contains('a blog created by cypress makkone')
+          .contains('view').click()
+      //cy.contains('like').click()
+
+      //cy.contains('a blog created by cypress makkone')
+      //    .contains('view').click()
+      cy.contains('likes: 1')
     })
   })
 

@@ -30,7 +30,7 @@ const Blog = ({ blog, addLike, removeBlog, loggedUser }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className="blog" style={blogStyle}>
       {!view ? <div>{blog.title} {blog.author} <button onClick={toggleView}>view</button></div>
         : <div>
           <p>title: {blog.title} <button onClick={toggleView}>hide</button></p>

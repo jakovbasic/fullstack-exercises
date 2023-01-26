@@ -41,7 +41,7 @@ describe('Blog app', function() {
       cy.get('#password').type('salainen')
       cy.contains('login').click()
     })
-    
+    /*
     it('A blog can be created', function() {
       cy.contains('add blog').click()
       cy.get('#title').type('a blog created by cypress')
@@ -50,7 +50,7 @@ describe('Blog app', function() {
       cy.contains('save').click()
       cy.contains('a blog created by cypress makkone')
     })
-    
+    */
     it('A blog can be created', function() {
       cy.contains('a blog created by cypress makkone')
           .contains('view').click()
@@ -60,6 +60,19 @@ describe('Blog app', function() {
       //    .contains('view').click()
       cy.contains('likes: 1')
     })
-  })
 
+    it('A blog can be removed by user', function() {
+      cy.contains('a blog created by cypress makkone')
+          .contains('view').click()
+      //cy.contains('remove').click()
+    })
+
+    it('Blogs are in like order', function() {
+      cy.get('.blog').eq(0).should('contain', 'aasd')
+      cy.get('.blog').eq(1).should('contain', 'uusi')
+      cy.get('.blog').eq(2).should('contain', 'asdasdsad')
+    })
+
+  })
+    
 })

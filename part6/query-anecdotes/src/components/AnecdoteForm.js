@@ -19,6 +19,7 @@ const AnecdoteForm = () => {
     if (content.length > 4) {
       newAnecdoteMutation.mutate({ content: content, id: getId(), votes: 0 })
     }
+
   }
 
   return (

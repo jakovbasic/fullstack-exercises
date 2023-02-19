@@ -63,26 +63,6 @@ const App = () => {
     dispatch(notification(`a new blog ${blogObject.title} by ${blogObject.author} added`,5000))
   }
 
-  const likeBlog = () => {/*
-    blogService
-      .update(blogObject.id,blogObject)
-      .then(returnedBlog => {
-        console.log(returnedBlog)
-        setBlogs(blogs.map(b => b !== returnedBlog ? b : returnedBlog ))
-      })*/
-  }
-
-  const deleteBlog = () => {/*
-    if(window.confirm(`Delete blog: ${blogObject.title}?`)) {
-      blogService
-        .remove(blogObject.id)
-        .then(returnedBlog => {
-          console.log(returnedBlog)
-          setBlogs(blogs.filter(b => b !== returnedBlog))
-        })
-    }*/
-  }
-
   return (
     <div>
       <h2>blogs</h2>
@@ -95,7 +75,7 @@ const App = () => {
             <BlogForm create={addBlog}/>
           </Togglable>
           {blogs.slice().sort((a, b) => b.likes - a.likes).map(blog =>
-            <Blog key={blog.id} blog={blog} addLike={likeBlog} removeBlog={deleteBlog} loggedUser={user} />
+            <Blog key={blog.id} blog={blog} loggedUser={user} />
           )}
         </div>
       }

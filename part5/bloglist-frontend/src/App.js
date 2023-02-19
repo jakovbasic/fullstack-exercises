@@ -6,11 +6,16 @@ import loginForm from './components/loginForm'
 import BlogForm from './components/blogForm'
 import Notification from './components/notification'
 import Togglable from './components/togglable'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { notification } from './reducers/notificationReducer'
+import { createBlog, initializeBlogs } from './reducers/blogReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+
+  const blogs = useSelector(state => {
+    return state.blogs
+  })
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -18,10 +23,8 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs.sort((a, b) => b.likes - a.likes))
-    )
-  }, [])
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -56,24 +59,20 @@ const App = () => {
   }
 
   const addBlog = (blogObject) => {
-    blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-      })
+    dispatch(createBlog(blogObject))
     dispatch(notification(`a new blog ${blogObject.title} by ${blogObject.author} added`,5000))
   }
 
-  const likeBlog = (blogObject) => {
+  const likeBlog = () => {/*
     blogService
       .update(blogObject.id,blogObject)
       .then(returnedBlog => {
         console.log(returnedBlog)
         setBlogs(blogs.map(b => b !== returnedBlog ? b : returnedBlog ))
-      })
+      })*/
   }
 
-  const deleteBlog = (blogObject) => {
+  const deleteBlog = () => {/*
     if(window.confirm(`Delete blog: ${blogObject.title}?`)) {
       blogService
         .remove(blogObject.id)
@@ -81,7 +80,7 @@ const App = () => {
           console.log(returnedBlog)
           setBlogs(blogs.filter(b => b !== returnedBlog))
         })
-    }
+    }*/
   }
 
   return (
@@ -95,7 +94,7 @@ const App = () => {
           <Togglable buttonLabel='add blog' buttonLabel2 = 'cancel'>
             <BlogForm create={addBlog}/>
           </Togglable>
-          {blogs.map(blog =>
+          {blogs.slice().sort((a, b) => b.likes - a.likes).map(blog =>
             <Blog key={blog.id} blog={blog} addLike={likeBlog} removeBlog={deleteBlog} loggedUser={user} />
           )}
         </div>

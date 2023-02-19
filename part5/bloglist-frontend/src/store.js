@@ -1,15 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit'
 import notificationReducer from './reducers/notificationReducer'
-//import blogService from './services/blogs'
+import blogReducer , { setBlogs } from './reducers/blogReducer'
+import blogService from './services/blogs'
 
 const store = configureStore({
   reducer: {
-    notification: notificationReducer
+    notification: notificationReducer,
+    blogs: blogReducer
   }
 })
-/*
+
 blogService.getAll().then(blogs =>
   store.dispatch(setBlogs(blogs))
-)*/
+)
 
 export default store

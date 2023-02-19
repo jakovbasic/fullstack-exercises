@@ -30,4 +30,26 @@ export const createBlog = content => {
   }
 }
 
+export const voteById = id => {
+  return async dispatch => {
+    const blogs = await blogService.getAll()
+    const voted = blogs.find(b => b.id === id)
+
+    const newBlog = { ...voted, votes: voted.votes+1 }
+    await blogService.update(id, newBlog)
+
+    const newBlogs = blogs.map(b => b.id === id ? newBlog : b)
+    dispatch(setBlogs(newBlogs))
+  }
+}
+
+export const removeById = id => {
+  return async dispatch => {
+    await blogService.remove(id)
+
+    const blogs = await blogService.getAll()
+    dispatch(setBlogs(blogs))
+  }
+}
+
 export default blogSlice.reducer

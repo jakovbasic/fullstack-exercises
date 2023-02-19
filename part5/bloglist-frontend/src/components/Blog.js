@@ -1,6 +1,11 @@
 import { useState } from 'react'
+import { voteById, removeById } from '../reducers/blogReducer'
+import { useDispatch } from 'react-redux'
 
-const Blog = ({ blog, addLike, removeBlog, loggedUser }) => {
+const Blog = ({ blog, loggedUser }) => {
+
+  const dispatch = useDispatch()
+
   const [view, setView] = useState(false)
 
   const blogStyle = {
@@ -12,12 +17,15 @@ const Blog = ({ blog, addLike, removeBlog, loggedUser }) => {
   }
 
   const like = () => {
-    const newBlog = { ...blog, likes: blog.likes+1, user: blog.user.id }
-    addLike(newBlog)
+    console.log('like pressed')
+    dispatch(voteById(blog.id))
   }
 
   const remove = () => {
-    removeBlog(blog)
+    if(window.confirm(`Delete blog: ${blog.title}?`)) {
+      console.log('remove pressed')
+      dispatch(removeById(blog.id))
+    }
   }
 
   const removeButton = () => {

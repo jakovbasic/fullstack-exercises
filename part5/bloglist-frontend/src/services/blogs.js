@@ -32,6 +32,7 @@ const remove = async id => {
   const request = axios.delete(`${ baseUrl }/${id}`)
   console.log(request)
   const response = await request
+  console.log(response)
   return response.data
 }
 

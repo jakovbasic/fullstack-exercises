@@ -29,7 +29,7 @@ describe('Blog app', function() {
       cy.get('#password').type('hesperi')
       cy.contains('login').click()
 
-      cy.get('.error').should('contain', 'wrong username or password') 
+      cy.get('.error').should('contain', 'wrong username or password')
       cy.get('.error').should('have.css', 'color', 'rgb(255, 0, 0)')
       cy.get('.error').should('have.css', 'border-style', 'solid')
     })
@@ -53,7 +53,7 @@ describe('Blog app', function() {
     */
     it('A blog can be created', function() {
       cy.contains('a blog created by cypress makkone')
-          .contains('view').click()
+        .contains('view').click()
       //cy.contains('like').click()
 
       //cy.contains('a blog created by cypress makkone')
@@ -63,7 +63,7 @@ describe('Blog app', function() {
 
     it('A blog can be removed by user', function() {
       cy.contains('a blog created by cypress makkone')
-          .contains('view').click()
+        .contains('view').click()
       //cy.contains('remove').click()
     })
 
@@ -74,5 +74,5 @@ describe('Blog app', function() {
     })
 
   })
-    
+
 })

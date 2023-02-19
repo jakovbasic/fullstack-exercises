@@ -6,13 +6,16 @@ import loginForm from './components/loginForm'
 import BlogForm from './components/blogForm'
 import Notification from './components/notification'
 import Togglable from './components/togglable'
+import { useDispatch } from 'react-redux'
+import { notification } from './reducers/notificationReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [message, setMessage] = useState('')
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -43,10 +46,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setMessage('wrong username or password')
-      setTimeout(() => {
-        setMessage('')
-      }, 5000)
+      dispatch(notification('wrong username or password', 5000))
     }
   }
 
@@ -61,10 +61,7 @@ const App = () => {
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
       })
-    setMessage(`a new blog ${blogObject.title} by ${blogObject.author} added`)
-    setTimeout(() => {
-      setMessage('')
-    }, 5000)
+    dispatch(notification(`a new blog ${blogObject.title} by ${blogObject.author} added`,5000))
   }
 
   const likeBlog = (blogObject) => {
@@ -90,10 +87,9 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notification message={message}/>
+      <Notification/>
       {!user ? loginForm({ handleLogin, username, setUsername, password, setPassword }) :
         <div>
-          <Notification message={message}/>
           <p>{user.name} logged in<button onClick={logout}>log out</button></p>
           <h2>create new</h2>
           <Togglable buttonLabel='add blog' buttonLabel2 = 'cancel'>
